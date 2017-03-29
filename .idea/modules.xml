@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ExampleModule.iml" filepath="$PROJECT_DIR$/ExampleModule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/argbevaluator/argbevaluator.iml" filepath="$PROJECT_DIR$/argbevaluator/argbevaluator.iml" />
+    </modules>
+  </component>
+</project>
