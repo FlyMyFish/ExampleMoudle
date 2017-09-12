@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="scheduleTextColor" format="color" />
+    <attr name="buttonColor" format="color" />
+    <attr name="backColor" format="color" />
+    <attr name="foreColor" format="color" />
+
+    <declare-styleable name="ScheduleSeekBar">
+        <attr name="scheduleTextColor" />
+        <attr name="buttonColor" />
+        <attr name="backColor" />
+        <attr name="foreColor" />
+    </declare-styleable>
+</resources>

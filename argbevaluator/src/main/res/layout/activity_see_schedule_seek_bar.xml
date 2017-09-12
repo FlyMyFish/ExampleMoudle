@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.shichen.zhang.examplemodule.ScheduleSeekBar
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        app:foreColor="@color/colorPrimaryDark"
+        app:backColor="@color/colorAccent"
+        app:buttonColor="@color/colorPrimary"
+        app:scheduleTextColor="@color/colorAccent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

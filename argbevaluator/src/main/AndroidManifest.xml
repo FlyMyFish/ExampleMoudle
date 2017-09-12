@@ -15,6 +15,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SeeScheduleSeekBarActivity"
+            android:launchMode="standard" />
     </application>
 
 </manifest>

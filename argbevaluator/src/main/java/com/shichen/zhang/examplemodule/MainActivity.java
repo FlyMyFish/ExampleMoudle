@@ -1,6 +1,7 @@
 package com.shichen.zhang.examplemodule;
 
 import android.animation.ArgbEvaluator;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -61,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.vp_content);
         List<TextView> itemList = new ArrayList<>();
         TextView tvPageOne = new TextView(this);
+        tvPageOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,SeeScheduleSeekBarActivity.class));
+            }
+        });
         tvPageOne.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         tvPageOne.setGravity(Gravity.CENTER);
         tvPageOne.setText("第一页");
