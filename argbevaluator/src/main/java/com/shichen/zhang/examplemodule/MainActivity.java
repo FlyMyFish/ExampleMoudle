@@ -146,7 +146,8 @@ public class MainActivity extends AppCompatActivity {
     private void changeTitleColor(int position, float positionOffset) {
         switch (position) {
             case 0: {
-                ArgbEvaluator argbEvaluator = new ArgbEvaluator();//渐变色计算类
+                //渐变色计算类
+                ArgbEvaluator argbEvaluator = new ArgbEvaluator();
                 int currentLastColor = (int) (argbEvaluator.evaluate(positionOffset, PAGE_COLOR_ONE, PAGE_COLOR_TWO));
                 //positionOffset:表示渐变度，取0.0F-1.0F之间某一值
                 //PAGE_COLOR_ONE:表示起始颜色值
@@ -166,6 +167,8 @@ public class MainActivity extends AppCompatActivity {
                 setStatusBarColor(PAGE_COLOR_THREE);
             }
             break;
+            default:
+                break;
         }
     }
 
