@@ -3,6 +3,7 @@ package com.shichen.zhang.examplemodule;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 /**
  * 展示seekBar
@@ -41,7 +42,16 @@ public class SeeScheduleSeekBarActivity extends AppCompatActivity {
 
             }
         });
+        final TextView tvPickedNum=(TextView)findViewById(R.id.tv_picked_num);
+        pickNumView=(PickNumView) findViewById(R.id.pnv);
+        pickNumView.setOnNumPickedListener(new PickNumView.OnNumPickedListener() {
+            @Override
+            public void numPicked(int value) {
+                tvPickedNum.setText(String.valueOf(value));
+            }
+        });
     }
 
     private ScheduleSeekBar scheduleSeekBar;
+    private PickNumView pickNumView;
 }

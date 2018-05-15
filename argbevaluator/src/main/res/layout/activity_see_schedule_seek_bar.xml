@@ -6,11 +6,24 @@
     android:layout_height="match_parent">
     <com.shichen.zhang.examplemodule.ScheduleSeekBar
         android:id="@+id/progress"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_margin="5dp"
         app:foreColor="@color/colorPrimaryDark"
         app:backColor="@color/colorAccent"
         app:buttonColor="@color/colorPrimary"
         app:scheduleTextColor="@color/colorAccent"
+        android:layout_height="wrap_content" />
+    <com.shichen.zhang.examplemodule.PickNumView
+        android:id="@+id/pnv"
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
+    <TextView
+        android:id="@+id/tv_picked_num"
+        android:layout_width="match_parent"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:gravity="center"
         android:layout_height="wrap_content" />
 </LinearLayout>
