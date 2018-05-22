@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         });
         tvPageOne.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         tvPageOne.setGravity(Gravity.CENTER);
-        tvPageOne.setText("第一页");
+        tvPageOne.setText("示例");
         tvPageOne.setBackgroundColor(PAGE_COLOR_ONE);
         itemList.add(tvPageOne);
         TextView tvPageTwo = new TextView(this);

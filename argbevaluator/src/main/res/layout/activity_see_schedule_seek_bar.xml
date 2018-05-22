@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
     <com.shichen.zhang.examplemodule.ScheduleSeekBar
         android:id="@+id/progress"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_margin="5dp"
         app:foreColor="@color/colorPrimaryDark"
@@ -26,4 +26,9 @@
         android:padding="10dp"
         android:gravity="center"
         android:layout_height="wrap_content" />
+
+    <com.shichen.zhang.examplemodule.banner.RecyclerBanner
+        android:id="@+id/rb_image"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"/>
 </LinearLayout>

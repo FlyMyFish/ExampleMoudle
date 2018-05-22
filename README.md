@@ -10,3 +10,5 @@ ScheduleSeekBar是项目的需求具体功能如下所示
 * 2018-5-15更新PickNumView
 PickNumView是对OverScroller实际运用
 ![示例图片](https://github.com/FlyMyFish/ExampleMoudle/blob/master/examplepic/picknumview.gif)
+* 2018-5-22更新RecyclerView的Banner实现
+![示例图片](https://github.com/FlyMyFish/ExampleMoudle/blob/master/examplepic/bannernormal.gif)
