@@ -17,6 +17,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.shichen.zhang.examplemodule.refresh.RefreshActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +76,12 @@ public class MainActivity extends AppCompatActivity {
         tvPageOne.setBackgroundColor(PAGE_COLOR_ONE);
         itemList.add(tvPageOne);
         TextView tvPageTwo = new TextView(this);
+        tvPageTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, RefreshActivity.class));
+            }
+        });
         tvPageTwo.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         tvPageTwo.setGravity(Gravity.CENTER);
         tvPageTwo.setText("第二页");
