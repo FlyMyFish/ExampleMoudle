@@ -1,6 +1,8 @@
 package com.shichen.zhang.examplemodule.refresh;
 
 import android.content.Context;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -23,6 +25,12 @@ import com.scwang.smartrefresh.layout.util.DensityUtil;
 public class MagicCarHeader extends RelativeLayout implements RefreshHeader {
     private final String TAG="MagicCarHeader";
     private ImageView ivProgress;
+    protected int mPaddingTop = 20;
+    protected int mPaddingBottom = 20;
+    /**
+     * 延迟多少秒回弹
+     */
+    protected int mFinishDuration = 200;
     private CarProgressDrawable progressDrawable;
     public MagicCarHeader(Context context) {
         this(context,null);
@@ -67,6 +75,16 @@ public class MagicCarHeader extends RelativeLayout implements RefreshHeader {
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.EXACTLY) {
+            setPadding(getPaddingLeft(), 0, getPaddingRight(), 0);
+        } else {
+            setPadding(getPaddingLeft(), mPaddingTop, getPaddingRight(), mPaddingBottom);
+        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
     public void setPrimaryColors(int... colors) {
 
     }
@@ -83,12 +101,22 @@ public class MagicCarHeader extends RelativeLayout implements RefreshHeader {
 
     @Override
     public void onStartAnimator(@NonNull RefreshLayout refreshLayout, int height, int maxDragHeight) {
-
+        progressDrawable.start();
     }
 
     @Override
     public int onFinish(@NonNull RefreshLayout refreshLayout, boolean success) {
-        return 0;
+        if (progressDrawable != null) {
+            progressDrawable.stop();
+        } else {
+            Drawable drawable = ivProgress.getDrawable();
+            if (drawable instanceof Animatable) {
+                ((Animatable) drawable).stop();
+            } else {
+                ivProgress.animate().rotation(0).setDuration(300);
+            }
+        }
+        return mFinishDuration;//延迟500毫秒之后再弹回
     }
 
     @Override

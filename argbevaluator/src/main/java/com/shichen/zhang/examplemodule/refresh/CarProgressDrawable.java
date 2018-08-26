@@ -1,5 +1,6 @@
 package com.shichen.zhang.examplemodule.refresh;
 
+import android.animation.ValueAnimator;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,9 +10,11 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
 import com.shichen.zhang.examplemodule.R;
@@ -26,7 +29,7 @@ import com.shichen.zhang.examplemodule.R;
  * paint：画笔，可为null
  * Created by shichen on 2018/8/22.
  */
-public class CarProgressDrawable extends Drawable {
+public class CarProgressDrawable extends Drawable implements Animatable {
     private ImageView parent;
     //汽车车身
     private Bitmap bpCarBody;
@@ -42,7 +45,26 @@ public class CarProgressDrawable extends Drawable {
 
     private int roadColor = 0xffbfbfbf;
 
+    /**
+     * 下来的百分比
+     */
     private float pullPercent;
+
+    private ValueAnimator mAnimator;
+
+    /**
+     * 车身与轮子的距离
+     */
+    private float offsetCarBodyToWheel = 0.0f;
+
+    /**
+     * 大树运动的时间
+     */
+    private float timeLongBTree=0.0f;
+    /**
+     * 小树运动的时间
+     */
+    private float timeLongSTree=0.0f;
 
     public CarProgressDrawable(ImageView parent) {
         this.parent = parent;
@@ -59,6 +81,7 @@ public class CarProgressDrawable extends Drawable {
         gas3 = BitmapFactory.decodeResource(parent.getResources(), R.drawable.src_car_gas);
         roadPaint = new Paint();
         roadPaint.setAntiAlias(true);
+        initAnimator();
     }
 
     @Override
@@ -81,13 +104,13 @@ public class CarProgressDrawable extends Drawable {
     }
 
     private void drawTree(Canvas canvas, int width, int height, float roadTop) {
-        float bigTreeL = (width / 4 * 3 + bigTree.getWidth()) * pullPercent - bigTree.getWidth();
-        float bigTreeR = (width / 4 * 3 + bigTree.getWidth()) * pullPercent;
+        float bigTreeL = (width + bigTree.getWidth()) * (pullPercent / 2 + timeLongBTree) - bigTree.getWidth();
+        float bigTreeR = (width + bigTree.getWidth()) * (pullPercent / 2 + timeLongBTree);
         float bigTreeT = roadTop - height / 6 - bigTree.getHeight();
         float bigTreeB = bigTreeT + bigTree.getHeight();
 
-        float smallTreeL = (width / 2 + smallTree.getWidth()) * pullPercent - width / 5;
-        float smallTreeR = (width / 2 + smallTree.getWidth()) * pullPercent - width / 5 + smallTree.getWidth();
+        float smallTreeL = (width + smallTree.getWidth()) * (pullPercent / 2 + timeLongSTree) - smallTree.getWidth();
+        float smallTreeR = (width + smallTree.getWidth()) * (pullPercent / 2 + timeLongSTree);
         float smallTreeT = roadTop - height / 4 - smallTree.getHeight();
         float smallTreeB = smallTreeT + smallTree.getHeight();
         canvas.drawBitmap(smallTree, null, new RectF(smallTreeL, smallTreeT, smallTreeR, smallTreeB), roadPaint);
@@ -107,8 +130,8 @@ public class CarProgressDrawable extends Drawable {
         float rightR = leftR + bpCarWheelRight.getWidth();
         float bottomR = topR + bpCarWheelRight.getHeight();
         canvas.drawBitmap(bpCarWheelRight, null, new RectF(leftR, topR, rightR, bottomR), roadPaint);
-        float bodyTop = roadTop - bpCarWheelLeft.getHeight() / 5 - bpCarBody.getHeight();
-        float bodyBottom = roadTop - bpCarWheelLeft.getHeight() / 5;
+        float bodyTop = roadTop - bpCarWheelLeft.getHeight() / 5 - bpCarBody.getHeight() - offsetCarBodyToWheel;
+        float bodyBottom = roadTop - bpCarWheelLeft.getHeight() / 5 - offsetCarBodyToWheel;
         canvas.drawBitmap(bpCarBody, null, new RectF(bodyLeft, bodyTop, bodyRight, bodyBottom), roadPaint);
     }
 
@@ -130,5 +153,54 @@ public class CarProgressDrawable extends Drawable {
     @Override
     public int getOpacity() {
         return PixelFormat.TRANSPARENT;
+    }
+
+    private void initAnimator() {
+        mAnimator = ValueAnimator.ofFloat(1.0f, 120.0f);
+        mAnimator.setDuration(4800);
+        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (Float) animation.getAnimatedValue();
+                if ((value % 40.0f) <= 20f) {
+                    offsetCarBodyToWheel = (value % 40.0f) / 4;
+                } else {
+                    offsetCarBodyToWheel = (20.0f - (value % 40.0f)) / 4;
+                }
+                if ((value % 30.0f) <= 15f) {
+                    timeLongBTree = (value % 30.0f) / 30f;
+                } else {
+                    timeLongBTree = (value % 30.0f) / 30f - 1.0f;
+                }
+                if ((value % 40.0f) <= 20f) {
+                    timeLongSTree = (value % 40.0f) / 40f;
+                } else {
+                    timeLongSTree = (value / 40.0f) / 40.0f - 1.0f;
+                }
+                invalidateSelf();
+            }
+        });
+        mAnimator.setInterpolator(new LinearInterpolator());
+        mAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        mAnimator.setRepeatMode(ValueAnimator.RESTART);
+    }
+
+    @Override
+    public void start() {
+        if (!mAnimator.isRunning()) {
+            mAnimator.start();
+        }
+    }
+
+    @Override
+    public void stop() {
+        if (mAnimator.isRunning()) {
+            mAnimator.cancel();
+        }
+    }
+
+    @Override
+    public boolean isRunning() {
+        return mAnimator.isRunning();
     }
 }
