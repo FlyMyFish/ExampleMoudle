@@ -27,6 +27,7 @@ public class MagicCarHeader extends RelativeLayout implements RefreshHeader {
     private ImageView ivProgress;
     protected int mPaddingTop = 20;
     protected int mPaddingBottom = 20;
+    private int mBackgroundColor=0xfffefefe;
     /**
      * 延迟多少秒回弹
      */
@@ -89,9 +90,11 @@ public class MagicCarHeader extends RelativeLayout implements RefreshHeader {
 
     }
 
+
+
     @Override
     public void onInitialized(@NonNull RefreshKernel kernel, int height, int maxDragHeight) {
-
+        kernel.requestDrawBackgroundForHeader(mBackgroundColor);
     }
 
     @Override

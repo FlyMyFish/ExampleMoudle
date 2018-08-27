@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.shichen.zhang.examplemodule.R;
@@ -28,6 +29,7 @@ public class RefreshActivity extends AppCompatActivity {
         RecyclerView rvTest=findViewById(R.id.rv_list);
         rvTest.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         rvTest.setAdapter(new TestAdapter());
+        ClassicsHeader classicsHeader;
         final SmartRefreshLayout srlRefresh=findViewById(R.id.srl_refresh);
         srlRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -41,7 +43,7 @@ public class RefreshActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            Thread.sleep(5000);
+                            Thread.sleep(15000);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

@@ -60,11 +60,15 @@ public class CarProgressDrawable extends Drawable implements Animatable {
     /**
      * 大树运动的时间
      */
-    private float timeLongBTree=0.0f;
+    private float timeLongBTree = 0.0f;
     /**
      * 小树运动的时间
      */
-    private float timeLongSTree=0.0f;
+    private float timeLongSTree = 0.0f;
+
+    private int gas1Alpha = 0;
+    private int gas2Alpha = 0;
+    private int gas3Alpha = 0;
 
     public CarProgressDrawable(ImageView parent) {
         this.parent = parent;
@@ -100,6 +104,7 @@ public class CarProgressDrawable extends Drawable implements Animatable {
         canvas.drawRect(roadLeft, roadTop, roadRight, roadBottom, roadPaint);
 
         drawTree(canvas, width, height, roadTop);
+        drawGas(canvas, width, height, roadTop);
         drawCar(canvas, width, height, roadTop);
     }
 
@@ -113,11 +118,13 @@ public class CarProgressDrawable extends Drawable implements Animatable {
         float smallTreeR = (width + smallTree.getWidth()) * (pullPercent / 2 + timeLongSTree);
         float smallTreeT = roadTop - height / 4 - smallTree.getHeight();
         float smallTreeB = smallTreeT + smallTree.getHeight();
+        roadPaint.setAlpha(255);
         canvas.drawBitmap(smallTree, null, new RectF(smallTreeL, smallTreeT, smallTreeR, smallTreeB), roadPaint);
         canvas.drawBitmap(bigTree, null, new RectF(bigTreeL, bigTreeT, bigTreeR, bigTreeB), roadPaint);
     }
 
     private void drawCar(Canvas canvas, int width, int height, float roadTop) {
+        roadPaint.setAlpha(255);
         float bodyLeft = width - (width / 2 + bpCarBody.getWidth() / 2) * pullPercent;
         float leftL = bodyLeft + bpCarBody.getWidth() / 19;
         float topL = roadTop - bpCarWheelLeft.getHeight();
@@ -135,8 +142,39 @@ public class CarProgressDrawable extends Drawable implements Animatable {
         canvas.drawBitmap(bpCarBody, null, new RectF(bodyLeft, bodyTop, bodyRight, bodyBottom), roadPaint);
     }
 
+    private void drawGas(Canvas canvas, int width, int height, float roadTop) {
+        float topL = roadTop - bpCarWheelLeft.getHeight() - gas1.getHeight();
+        float bodyRight = width + bpCarBody.getWidth() - (width / 2 + bpCarBody.getWidth() / 2);
+        float top1 = topL + bpCarWheelLeft.getHeight() / 2;
+        float left1 = bodyRight + gas1.getWidth() / 2;
+        float right1 = left1 + gas1.getWidth();
+        float bottom1 = top1 + gas1.getHeight();
+        roadPaint.setAlpha(gas1Alpha);
+        canvas.drawBitmap(gas1, null, new RectF(left1, top1, right1, bottom1), roadPaint);
+
+        float top2 = top1 - gas2.getHeight();
+        float left2 = left1 + gas2.getWidth();
+        float right2 = left2 + gas2.getWidth();
+        float bottom2 = top2 + gas2.getHeight();
+        roadPaint.setAlpha(gas2Alpha);
+        canvas.drawBitmap(gas2, null, new RectF(left2, top2, right2, bottom2), roadPaint);
+
+        float top3 = top2 - gas3.getHeight();
+        float left3 = left2 + gas3.getWidth();
+        float right3 = left3 + gas3.getWidth();
+        float bottom3 = top3 + gas3.getHeight();
+        roadPaint.setAlpha(gas3Alpha);
+        canvas.drawBitmap(gas3, null, new RectF(left3, top3, right3, bottom3), roadPaint);
+    }
+
     public void setPullPercent(float pullPercent) {
         this.pullPercent = pullPercent;
+        offsetCarBodyToWheel = 0.0f;
+        timeLongBTree = 0.0f;
+        timeLongSTree = 0.0f;
+        gas1Alpha = 0;
+        gas2Alpha = 0;
+        gas3Alpha = 0;
         invalidateSelf();
     }
 
@@ -162,20 +200,33 @@ public class CarProgressDrawable extends Drawable implements Animatable {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (Float) animation.getAnimatedValue();
-                if ((value % 40.0f) <= 20f) {
-                    offsetCarBodyToWheel = (value % 40.0f) / 4;
+                if ((value % 10.0f) <= 5f) {
+                    offsetCarBodyToWheel = (value % 10.0f);
                 } else {
-                    offsetCarBodyToWheel = (20.0f - (value % 40.0f)) / 4;
+                    offsetCarBodyToWheel = (10.0f - (value % 10.0f));
                 }
-                if ((value % 30.0f) <= 15f) {
-                    timeLongBTree = (value % 30.0f) / 30f;
+                if ((value % 20.0f) <= 10f) {
+                    timeLongBTree = (value % 20.0f) / 20f;
                 } else {
-                    timeLongBTree = (value % 30.0f) / 30f - 1.0f;
+                    timeLongBTree = (value % 20.0f) / 20f - 1.0f;
                 }
                 if ((value % 40.0f) <= 20f) {
                     timeLongSTree = (value % 40.0f) / 40f;
                 } else {
-                    timeLongSTree = (value / 40.0f) / 40.0f - 1.0f;
+                    timeLongSTree = (value % 40.0f) / 40.0f - 1.0f;
+                }
+                if ((value % 40.0f) <= 5.0f) {
+                    gas1Alpha = (int) (255 * ((value % 40.0f) / 5.0f));
+                } else if ((value % 40.0f) <= 10.0f) {
+                    gas1Alpha = (int) (255 * ((10.0f - (value % 40.0f)) / 5.0f));
+                } else if ((value % 40.0f) <= 15.0f) {
+                    gas2Alpha = (int) (255 * (((value % 40.0f) - 10.0f) / 5.0f));
+                } else if ((value % 40.0f) <= 20.0f) {
+                    gas2Alpha = (int) (255 * ((10.0f - ((value % 40.0f) - 10.0f)) / 5.0f));
+                } else if ((value % 40.0f) <= 25.0f) {
+                    gas3Alpha = (int) (255 * (((value % 40.0f) - 20.0f) / 5.0f));
+                } else if ((value % 40.0f) <= 30.0f) {
+                    gas3Alpha = (int) (255 * ((10.0f - ((value % 40.0f) - 20.0f)) / 5.0f));
                 }
                 invalidateSelf();
             }
